@@ -1,0 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+article{
+        background-color: aquamarine;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 80%;
+        border-radius: 5px;
+        box-shadow: 5px 5px 10px gray;
+        padding: 15px;
+        margin-bottom: 20px;
+    
+}
+img {
+    width: 30%;
+}
+div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px gray;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+p{
+    font-size: 80px;
+}
