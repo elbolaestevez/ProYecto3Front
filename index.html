@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="./css/style.css">
     <title>ApiLibros</title>
 </head>
+<header>
+    
+    <a href="favoritos.html" id="linkfavoritos">favoritos</a>
+</header>
 <body>
     <form id ="form1" action="#" method="POST">
         <h3>Formulario de Registro</h3>
@@ -27,11 +31,20 @@
         <input type="password" id="pass3" name="pass3" placeholder="Introduce password..."><br>
         <p><a href="#">¿Olvidó su contraseña?</a></p>
         <input type="submit" value="Enviar" id="enviarForm2"><br>
+    </form> 
+    <div id="logout">
+        <h3>Logout</h3>
+        <button id="salir">Cerrar sesión</button>
+    </div>   
+<!-- <div className="App">      -->
+<h1>New York Times</h1>
+<h2>Best Sellers</h2>
 
-    </form>   
-<h1>Aca estan los mejores libros</h1>
 <div id="categorias">
 </div>
+
+<!-- 
+<img src="./Assets/Spinner.jpg" id="boxloading" alt="Spinner"> -->
 
 
 
@@ -41,6 +54,7 @@
      https://firebase.google.com/docs/web/setup#available-libraries -->
  <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
  <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
- <script src="./js/main.js"></script>    
+ <script src="./js/main.js"></script>
+     
 </body>
 </html>
