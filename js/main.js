@@ -1,17 +1,18 @@
+
 const firebaseConfig = {
   apiKey: "AIzaSyCfB41QVgMdlyejkgdK9R6xa66_5LPmgx4",
-authDomain: "prueba-web-3b003.firebaseapp.com",
-projectId: "prueba-web-3b003",
-storageBucket: "prueba-web-3b003.appspot.com",
-messagingSenderId: "28225104166",
-appId: "1:28225104166:web:ae07176f88fba92ec3b9e7"
+  authDomain: "prueba-web-3b003.firebaseapp.com",
+  projectId: "prueba-web-3b003",
+  storageBucket: "prueba-web-3b003.appspot.com",
+  messagingSenderId: "28225104166",
+  appId: "1:28225104166:web:ae07176f88fba92ec3b9e7"
 }
 
 
 ////////////Firebase///////////////////////////////
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore(); // db representa mi BBDD
-const auth=firebase.auth();
+const auth = firebase.auth();
 const createUser = (user) => {
   db.collection("users")
     .add(user)
@@ -52,8 +53,8 @@ document.getElementById("form1").addEventListener("submit", function (event) {
   let pass = event.target.elements.pass.value;
   let pass2 = event.target.elements.pass2.value;
   function check(emailtxt, passtxt) {
-    let reEmail = /[0-9a-zA-Z]/;
-    let rePass = /[0-9a-zA-Z]/;
+    let reEmail = /[0-9a-zA-Z]+@[a-zA-Z]+\.[a-zA-Z]+/;
+    let rePass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
 
     if (
       reEmail.test(emailtxt) === true &&
@@ -74,8 +75,8 @@ document.getElementById("form1").addEventListener("submit", function (event) {
     }
   }
   check(email, pass);
-  sessionStorage.setItem("usuario",email)
-  //sessionStorage.setItem("id",user.uid)
+  sessionStorage.setItem("usuario", email)
+
 
 });
 //Loguearse//
@@ -87,9 +88,9 @@ const signInUser = (email, password) => {
       // Signed in
       let user = userCredential.user;
       console.log(`se ha logado ${user.email} ID:${user.uid}`);
-      sessionStorage.setItem("usuario",email)
+      sessionStorage.setItem("usuario", email)
       alert(`se ha logado ${user.email} ID:${user.uid}`);
-      
+
     })
     .catch((error) => {
       let errorCode = error.code;
@@ -99,50 +100,56 @@ const signInUser = (email, password) => {
     });
 };
 
-document.getElementById("form2").addEventListener("submit",function(event){
+document.getElementById("form2").addEventListener("submit", function (event) {
   event.preventDefault();
   let email = event.target.elements.email2.value;
   let pass = event.target.elements.pass3.value;
-  signInUser(email,pass);
+  signInUser(email, pass);
 
 })
 
 ///Cuando estas loguiado hace esto///
-auth.onAuthStateChanged(user=>{
-  if(user){
+auth.onAuthStateChanged(user => {
+  if (user) {
     document.getElementById("form1").style.display = "none";
     document.getElementById("form2").style.display = "none";
-    document.getElementById("linkfavoritos").style.display = "flex";
+    document.getElementById("linkfavoritos").style.display = "block";
   }
 })
 // Desloguearse
 const signOut = () => {
   let user = firebase.auth().currentUser;
   firebase.auth().signOut().then(() => {
-      console.log("Sale del sistema: "+user.email)
-      document.getElementById("linkfavoritos").style.display = "none";
-      document.getElementById("form1").style.display = "block";
-      document.getElementById("form2").style.display = "block";
-    }).catch((error) => {
-      console.log("hubo un error: "+error);
-    });
+    console.log("Sale del sistema: " + user.email)
+    document.getElementById("linkfavoritos").style.display = "none";
+    document.getElementById("form1").style.display = "block";
+    document.getElementById("form2").style.display = "block";
+  }).catch((error) => {
+    console.log("hubo un error: " + error);
+  });
 }
-document.getElementById("salir").addEventListener("click",signOut);
+document.getElementById("salir").addEventListener("click", signOut);
 
 //////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
-// boxloading=document.querySelector("#boxloading")
-// boxloading.style.display = "block";
+
+
+
+
+
+//declaro algunas variables globales//
+let TodaslasCategorias = document.getElementById("categorias");
+let TodoslosLibros = document.getElementById("libros");
+
+//Primer Fetch
 async function generarLibros() {
   let fetchlibros = await fetch(
-    "https://api.nytimes.com/svc/books/v3/lists/names.json?api-key=w45qEYAPypLD4KjKe3pgLxZN8pkvz1t2"
-  );
+    "https://api.nytimes.com/svc/books/v3/lists/names.json?api-key=w45qEYAPypLD4KjKe3pgLxZN8pkvz1t2");
   let dataApi = await fetchlibros.json();
   return dataApi;
 }
+//Guardo la informacion en un array nuevo y luego los recorro para ir pintando
 generarLibros().then(function (dataApi) {
-
-
   let results = dataApi.results;
   console.log(results);
   let categorias = results.map((categoria) => categoria.list_name);
@@ -151,10 +158,6 @@ generarLibros().then(function (dataApi) {
   let updates = results.map((update) => update.updated);
   let lists = results.map((list) => list.list_name_encoded);
 
-  //spinner//
-  //let loader = `<div class="boxLoading"></div>`;
-  //document.getElementById('dives').innerHTML = loader;
-  let botondiv = document.getElementById("categorias");
   for (let i = 0; i < categorias.length; i++) {
     let h2 = document.createElement("h2");
     let p = document.createElement("p");
@@ -162,9 +165,9 @@ generarLibros().then(function (dataApi) {
     let p2 = document.createElement("p");
     let boton = document.createElement("button");
     let divcaja = document.createElement("div");
-    let dives = document.createElement("article");
-    //le asigno a list el array con los list_name_encoded//
-    boton.list = lists[i];
+    let article = document.createElement("article");
+    //le asigno al boton el list con el array con los list_name_encoded//
+    boton.categoriaencoded = lists[i];
     /// los innerHtml
     h2.innerHTML = `${categorias[i]}`;
     p.innerHTML = `Oldest:${olddates[i]}`;
@@ -173,95 +176,103 @@ generarLibros().then(function (dataApi) {
     boton.innerHTML = "read more";
     //los append
     divcaja.appendChild(h2);
-    divcaja.appendChild(p);  
+    divcaja.appendChild(p);
     divcaja.appendChild(p1);
     divcaja.appendChild(p2);
     divcaja.appendChild(boton);
-    divcaja.appendChild(dives);
-    botondiv.appendChild(divcaja);
-    //crear id//
-    divcaja.id="hijos";
-    dives.id = `some${i}`;
+    divcaja.appendChild(article);
+    TodaslasCategorias.appendChild(divcaja);
+    //crear id para las distintas cajas//
+    divcaja.id = "hijos";
+    article.id = `some${i}`;
     boton.id = `btn${i}`;
     //blockiar el div//
-    document.querySelector(`#some${i}`).style.display = "none";
-    //
+     document.querySelector(`#some${i}`).style.display = "none";
+    // Un addEvenlistener que al tocar el boton aparezca el div todos los libros y invoca a eventoclick
     document.getElementById(`btn${i}`).addEventListener("click", function (e) {
       document.getElementById(`some${i}`).style.display = "flex";
-      eventoClick(this.list, i);
-
-      //boton para volver atras//
-      let button_goback = document.createElement("button");
-      button_goback.innerHTML = "Go Back";
-      dives.appendChild(button_goback);
-      button_goback.onclick = () => {
-        dives.childNodes.forEach((element) => {
-          if (!(element === button_goback)) {
-            dives.removeChild(element);
-          }
-          dives.style.display = "none";
-        });
-        //dives.appendChild(button_goback);
-      };
+      TodoslosLibros.style.display = "flex"
+      eventoClick(this.categoriaencoded, i);
     });
   }
 });
-
-async function generarbooks(list) {
-  let fetchbooks = await fetch(
-    `https://api.nytimes.com/svc/books/v3/lists/${list}.json?api-key=w45qEYAPypLD4KjKe3pgLxZN8pkvz1t2`
-  );
+//Segundo Fetch donde list tiene el valor de la categoria
+async function generarbooks(categoriaencoded) {
+  let fetchbooks = await fetch(`https://api.nytimes.com/svc/books/v3/lists/${categoriaencoded}.json?api-key=w45qEYAPypLD4KjKe3pgLxZN8pkvz1t2`);
   let dataApibook = await fetchbooks.json();
   console.log(dataApibook);
   return dataApibook;
 }
 
-function eventoClick(list, indice) {
-  generarbooks(list).then((resultado) => addBooksToPage(resultado, indice));
+function eventoClick(categoriaencoded, indice) {
+  TodaslasCategorias.style.display = "none"
+  generarbooks(categoriaencoded).then((resultado) => addBooksToPage(resultado, indice));
+
 }
 
 function addBooksToPage(resultado, indice) {
   let results = resultado.results.books;
-  let divs = document.getElementById(`some${indice}`);
+  //crear boton para volver//
+  let button_volver = document.createElement("button");
+  button_volver.id = "volver"
+  button_volver.innerHTML = "Volver atras";
+  button_volver.onclick = () => {
+    window.location.href = "./"
+
+  }
+  TodoslosLibros.appendChild(button_volver)
+
   for (let i = 0; i < results.length; i++) {
     let h2 = document.createElement("h2");
     let img = document.createElement("img");
     let p = document.createElement("p");
     let p1 = document.createElement("p");
-    let button=document.createElement("button");
-      let button_favoritos=document.createElement("button")
-      button_favoritos.innerHTML="favoritos"
-      button_favoritos.onclick=()=>{
-      let emailusuario=sessionStorage.getItem("usuario")
+    let button = document.createElement("button");
+    let button_favoritos = document.createElement("button")
+    let divcaja2 = document.createElement("div");
+    button_favoritos.innerHTML = "favoritos"
+    button_favoritos.onclick = () => {
+      let emailusuario = sessionStorage.getItem("usuario")
       //let usuarioid=sessionStorage.getItem("id")
-        //Creo un objeto con los datos a guardar
-        let datos={//id:usuarioid,
-                  usuario: emailusuario,
-                  titulo: results[i].title,
-                  imagen: results[i].book_image,
-                  amazon: results[i].amazon_product_url}
-        guardarfavoritos(datos)            
+      //Creo un objeto con los datos a guardar
+      let datos = {//id:usuarioid,
+        usuario: emailusuario,
+        titulo: results[i].title,
+        imagen: results[i].book_image,
+        amazon: results[i].amazon_product_url
       }
-    h2.innerHTML =` ${results[i].rank}:${results[i].title}`
+      guardarfavoritos(datos)
+    }
+    h2.innerHTML = ` ${results[i].rank}:${results[i].title}`
     img.setAttribute('src', `${results[i].book_image}`);
     p.innerHTML = results[i].description;
-    p1.innerHTML =`Weeks on the list: ${results[i].weeks_on_list}`;
+    p1.innerHTML = `Weeks on the list: ${results[i].weeks_on_list}`;
     button.innerHTML = "BUY AT AMAZON";
-    button.onclick = () => { window.location.href = results[i].amazon_product_url };
-    divs.appendChild(h2);
-    divs.appendChild(img)
-    divs.appendChild(p1)
-    divs.appendChild(p)
-    divs.appendChild(button)
-    divs.appendChild(button_favoritos)
+    button.onclick = () => { window.location.href = "results.html"; };
+    // id para divcaja2//
+    divcaja2.id = "nietos";
+    //
+    //button go back//
+
+
+    ///
+
+    divcaja2.appendChild(h2);
+    divcaja2.appendChild(img)
+    divcaja2.appendChild(p1)
+    divcaja2.appendChild(p)
+    divcaja2.appendChild(button)
+    divcaja2.appendChild(button_favoritos)
+
+    TodoslosLibros.appendChild(divcaja2)
   }
 }
 //esto guarda en una coleccion nueva llamada favoritos en firebase//
-function guardarfavoritos(datoslibro){
+function guardarfavoritos(datoslibro) {
   db.collection("favoritos")
-  .add(datoslibro)
-  .then((docRef) => console.log("Document written with ID: ", docRef.id))
-  .catch((error) => console.error("Error adding document: ", error));
+    .add(datoslibro)
+    .then((docRef) => console.log("Document written with ID: ", docRef.id))
+    .catch((error) => console.error("Error adding document: ", error));
 
 }
 
@@ -269,36 +280,7 @@ function guardarfavoritos(datoslibro){
 
 
 
-///
-// firebase.auth().onAuthStateChanged(function(user) {
-//   if (user) {
-//     // User is signed in.
-//   } else {
-//     // No user is signed in.
-//   }
-// });
 
 
-//let loader = `<div class="boxLoading"></div>`;
-//document.getElementById('dives').innerHTML = loader;
-//results.forEach((element) => {
 
-//let books = element.books;
-// results.forEach((book,i) => {
 
-//     console.log(book)
-//     let h2 = document.createElement("h2");
-//     let img = document.createElement("img");
-//     let p = document.createElement("p");
-//     let p1 = document.createElement("p");
-//     let button=document.createElement("button");
-
-//     //innerhtml///
-//     h2.innerHTML = book.title
-//     img.setAttribute('src', `${book.book_image}`);
-//     p.innerHTML = book.description;
-//     p1.innerHTML = book.weeks_on_list;
-//     button.innerHTML = "BUY AT AMAZON";
-//     button.onclick = () => { window.location.href = book.amazon_product_url };
-
-//     //let text = document.createTextNode(`${book.title}`);

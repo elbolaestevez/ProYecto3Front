@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,21 +10,26 @@
 </head>
 <header>
     
-    <a href="favoritos.html" id="linkfavoritos">favoritos</a>
 </header>
+
 <body>
-    <form id ="form1" action="#" method="POST">
+    
+        
+        <a href="favoritos.html" id="linkfavoritos">Favoritos</a>
+    
+
+    <form id="form1" action="#" method="POST">
         <h3>Formulario de Registro</h3>
         <label for="email">Email:</label><br>
-        <input  id="email" name="email" placeholder="Introduce tu email..."><br>
+        <input id="email" name="email" placeholder="Introduce tu email..."><br>
         <label for="pass">Password:</label><br>
         <input type="password" id="pass" name="pass" placeholder="Introduce password..."><br>
         <label for="pass2">Repite password:</label><br>
         <input type="password" id="pass2" name="pass2" placeholder="Repite password..."><br><br>
         <input type="submit" value="Enviar" id="enviarForm1"><br>
     </form>
-    
-    <form id ="form2" action="#" method="POST">
+
+    <form id="form2" action="#" method="POST">
         <h3>Formulario de Login</h3>
         <label for="email2">Email:</label><br>
         <input type="email" id="email2" name="email2" placeholder="Introduce email..."><br>
@@ -31,30 +37,29 @@
         <input type="password" id="pass3" name="pass3" placeholder="Introduce password..."><br>
         <p><a href="#">¿Olvidó su contraseña?</a></p>
         <input type="submit" value="Enviar" id="enviarForm2"><br>
-    </form> 
+    </form>
     <div id="logout">
         <h3>Logout</h3>
         <button id="salir">Cerrar sesión</button>
-    </div>   
-<!-- <div className="App">      -->
-<h1>New York Times</h1>
-<h2>Best Sellers</h2>
+    </div>
 
-<div id="categorias">
-</div>
+    
+    <h1>New York Times</h1>
+    <h2>Best Sellers</h2>
 
-<!-- 
-<img src="./Assets/Spinner.jpg" id="boxloading" alt="Spinner"> -->
+    <div id="categorias"></div>
+    <div id="libros"></div>
 
 
 
- <!-- The core Firebase JS SDK is always required and must be listed first -->
- <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
- <!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
- <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
- <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
- <script src="./js/main.js"></script>
-     
+
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
+    <script src="./js/main.js"></script>
+
 </body>
+
 </html>
